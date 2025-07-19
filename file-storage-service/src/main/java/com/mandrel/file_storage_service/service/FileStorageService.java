@@ -10,14 +10,15 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 public class FileStorageService {
 
-    private final Path rootLocation = Paths.get("uploaded-files");
+    private static final Path ROOT = Paths.get("uploaded-files");
 
     public void store(MultipartFile file) {
         try {
-            if (file.isEmpty()) {
-                throw new RuntimeException("Failed to store empty file");
+            if (Files.notExists(ROOT)) {
+                Files.createDirectories(ROOT);
             }
-            Files.copy(file.getInputStream(), this.rootLocation.resolve(file.getOriginalFilename()));
+            Path destination = ROOT.resolve(file.getOriginalFilename());
+            Files.write(destination, file.getBytes());
         } catch (Exception e) {
             throw new RuntimeException("Failed to store file " + file.getOriginalFilename(), e);
         }

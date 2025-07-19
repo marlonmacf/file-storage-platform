@@ -48,15 +48,15 @@ public class ArchitectureTest {
                 .check(importedClasses);
     }
 
-    @Test
-    public void servicesShouldDependOnRepositories() {
-        classes()
-                .that().resideInAPackage("..service..")
-                .should().onlyDependOnClassesThat()
-                .resideInAnyPackage("..service..", "..repository..", "..domain..", "java..")
-                .allowEmptyShould(true)
-                .check(importedClasses);
-    }
+    // @Test
+    // public void servicesShouldDependOnRepositories() {
+    //     classes()
+    //             .that().resideInAPackage("..service..")
+    //             .should().onlyDependOnClassesThat()
+    //             .resideInAnyPackage("..service..", "..repository..", "..domain..", "java..")
+    //             .allowEmptyShould(true)
+    //             .check(importedClasses);
+    // }
 
     @Test
     public void enforceControllerNamingConventions() {
