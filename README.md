@@ -4,17 +4,27 @@ A Spring Boot + Angular application to upload and store arbitrary files (any typ
 
 ---
 
-## Features
+## Technologies & Patterns Used (What I Learned)
 
+TODO: ...
+
+---
+
+
+## Architecture Overview
+
+### File Storage Service
+
+**Purpose:**
+- TODO: ...
+
+**Key Responsibilities:**
 - **Any File Upload** via REST (`POST /files/upload`)
 - **List Files** with metadata (`GET /files`)
 - **Download File** by ID (`GET /files/{id}`)
 - Store files in H2 using `@Lob` BLOB storage
 - Layered architecture with best practices
 
----
-
-## Architecture Overview
 
 ```
 backend/
