@@ -1,4 +1,4 @@
-# File Storage Service
+# File Storage Platform
 
 A Spring Boot + Angular application to upload and store arbitrary files (any type) in an H2 in-memory database as BLOBs. Goal is to experiment and include full testing coverage: architecture rules, unit tests, integration tests, and end-to-end tests with Cypress.
 
@@ -13,8 +13,6 @@ TODO: ...
 
 ## Architecture Overview
 
-### File Storage Service
-
 **Purpose:**
 - TODO: ...
 
@@ -25,29 +23,25 @@ TODO: ...
 - Store files in H2 using `@Lob` BLOB storage
 - Layered architecture with best practices
 
-
 ```
 backend/
 ├── src/main/java/...
-│   ├── controller/
-│   │   └── FileUploadController.java ← (handles upload, list, download endpoints)
-│   ├── service/
-│   │   └── FileStorageService.java   ← (validates, transforms metadata, and saves files)
-│   ├── repository/
-│   │   └── FileRepository.java       ← (JPA repository for file persistence)
-│   ├── domain/
-│   │   └── StoredFile.java           ← (holds metadata + binary content (byte[]))
-│   ├── dto/...
-│   └── util/...                      ← (optional validators)
+│   ├── controller/...    ← (handles upload, list, download endpoints)
+│   ├── service/...       ← (validates, transforms metadata, and saves files)
+│   ├── repository/...    ← (JPA repository for file persistence)
+│   ├── model/...         ← (holds metadata + binary content (byte[]))
+│   └── util/...          ← (optional validators)
 └── src/test/java/...
-    ├── architecture/                 ← (ensures layered independence using ArchUnit)
-    ├── integration/                  ← (Spring Boot + H2 using @SpringBootTest and @DataJpaTest)
-    └── unit/                         ← (isolated component behavior via JUnit + Mockito)
+    ├── architecture/...  ← (ensures layered independence using ArchUnit)
+    ├── integration/...   ← (Spring Boot + H2 using @SpringBootTest and @DataJpaTest)
+    └── unit/...          ← (isolated component behavior via JUnit + Mockito)
 
 frontend/
 └── src/
     ├── app/...
-    └── cypress/                      ← (E2E: Cypress tests HTTP endpoints + UI end-to-end flow)
+    └── cypress/...       ← (E2E: Cypress tests HTTP endpoints + UI end-to-end flow)
+
+files-to-test/...         ← (sample csv, json, png, and txt for testing)
 ```
 
 ---
