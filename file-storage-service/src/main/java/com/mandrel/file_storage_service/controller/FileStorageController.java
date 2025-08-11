@@ -11,6 +11,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.util.unit.DataSize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,6 +30,8 @@ import com.mandrel.file_storage_service.service.FileStorageService;
 public class FileStorageController {
 
     private final FileStorageService fileStorageService;
+    @Value("${spring.servlet.multipart.max-file-size:}")
+    private String maxFileSizeProperty;
 
     @Autowired
     public FileStorageController(FileStorageService fileStorageService) {
@@ -55,6 +59,19 @@ public class FileStorageController {
 
     @PostMapping("/save")
     public ResponseEntity<String> storeFileInMemory(@RequestParam("file") MultipartFile file) throws IOException {
+        if (file == null || file.isEmpty()) {
+            return ResponseEntity.badRequest().body("File must be provided");
+        }
+        String content = file.getContentType();
+        if (content == null || content.isBlank()) {
+            return ResponseEntity.badRequest().body("Content-Type must be provided");
+        }
+        DataSize max = (maxFileSizeProperty == null || maxFileSizeProperty.isBlank())
+                ? null
+                : DataSize.parse(maxFileSizeProperty);
+        if (max != null && file.getSize() > max.toBytes()) {
+            return ResponseEntity.status(HttpStatus.PAYLOAD_TOO_LARGE).body("File too large");
+        }
         StoredFileDto dto = StoredFileDto.builder()
                 .filename(file.getOriginalFilename())
                 .contentType(file.getContentType())
