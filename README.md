@@ -120,3 +120,10 @@ npm run cypress:open
 Run Cypress tests against `http://localhost:4200`.
 
 ---
+
+### Commands
+
+mvn -f "/home/mandrel/Documents/file-storage-platform/file-storage-service/pom.xml" -q -DskipTests=false test
+mvn -f "/home/mandrel/Documents/file-storage-platform/file-storage-service/pom.xml" -q verify
+
+---
