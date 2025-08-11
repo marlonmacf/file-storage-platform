@@ -121,9 +121,90 @@ Run Cypress tests against `http://localhost:4200`.
 
 ---
 
-### Commands
+### Cursor + GPT 5
 
-mvn -f "/home/mandrel/Documents/file-storage-platform/file-storage-service/pom.xml" -q -DskipTests=false test
-mvn -f "/home/mandrel/Documents/file-storage-platform/file-storage-service/pom.xml" -q verify
+## #1 Task
+
+I’m going to add a JaCoCo coverage plugin to file-storage-service/pom.xml, to be able to run the test suite with coverage enabled, generate the report, and extract a concise per-class coverage summary.
+
+Running Maven verify to execute tests and generate JaCoCo coverage, then I’ll read the generated JaCoCo CSV/XML and summarize per-class coverage.
+
+mvn -f file-storage-service/pom.xml -q -DskipTests=false test
+mvn -f file-storage-service/pom.xml -q verify
+
+I’m going to locate the generated JaCoCo report files and read the CSV/XML so I can summarize per-class coverage.
+
+file:///home/mandrel/Documents/file-storage-platform/file-storage-service/target/site/jacoco/index.html
+
+I added JaCoCo, ran the tests with coverage, and parsed the generated report to summarize per-class coverage.
+
+## #2 Task
+
+I’m about to add comprehensive tests: controller tests with WebMvcTest, service tests with Mockito/JUnit, repository tests with DataJpaTest, and DTO utility tests with JUnit. Then I’ll run the test suite and report coverage.
+
+I’m going to create the necessary test directories, then add controller, service, repository, and DTO tests. After that, I’ll run the tests and report coverage.
+
+## 3# Task
+
+Creating integration tests: one for end-to-end memory storage flow with @SpringBootTest + @AutoConfigureMockMvc, one for local filesystem flow using MockMvc and cleaning up files, and a repository test to verify BLOB save/retrieval with @DataJpaTest. Then I’ll run the full test suite.
+
+## #4 Task
+
+Negative/edge-case HTTP tests: empty file, missing file part, oversized file (>10MB), unknown content types, filename with path traversal. Assert 400/413 and error bodies.
+
+## #5 Task
+
+Added concurrency tests in ConcurrencyIntegrationTest:
+    • Parallel uploads to memory (/files/memory/save) using a thread pool; asserts all IDs returned and each file downloads successfully.
+    • Parallel downloads from memory; ensures each downloaded payload matches what was uploaded.
+    • Parallel uploads to local filesystem; validates content on download. Added cleanup of uploaded-files/ after each run for isolation.
+  • Implemented negative/edge-case HTTP tests in NegativeEdgeCasesControllerTest:
+    • Empty file, missing part, unknown content type, path traversal, and oversized payload. Configured a lower multipart limit for this
+      test class via @TestPropertySource to reliably assert 413.
+  • Fixed controller constructors so tests don’t require MultipartProperties beans; they now read spring.servlet.multipart.max-file-size
+    via @Value and do size checks manually.
+
+## #6 Task
+
+Large file/streaming tests: verify memory usage and headers on multi‑MB files; ensure download streams correctly.
+
+## #7 Task
+
+JSON serialization tests (`@JsonTest`): assert StoredFileDto JSON shape, null handling, and date format.
+
+## #8 Task
+REST API contract tests: Rest Assured with OpenAPI schema validation (springdoc + swagger-request-validator) to prevent breaking changes.
+
+## #9 Task
+DB-specific integration with Testcontainers: run against PostgreSQL (or your target DB) to verify BLOB behavior beyond H2.
+
+## #10 Task
+Migration tests: if you add Flyway/Liquibase, validate migrations up/down and data preservation.
+
+## #11 Task
+Security tests: with Spring Security Test (roles, unauthorized/forbidden, CSRF) if/when security is added.
+
+## #12 Task
+Mutation testing: PIT (pitest-maven) to ensure tests catch real code changes.
+
+## #13 Task
+Property-based tests: jqwik for filenames, binary sizes, and weird content inputs.
+
+## #14 Task
+Performance/load: Gatling or k6 scenarios for upload/download throughput and tail latency.
+
+## #15 Task
+Filesystem failure/permissions: simulate IO failures (e.g., with jimfs or by mocking Files.* to throw IOException) and assert 5xx handling.
+
+## #16 Task
+Contract tests (Pact): if a separate UI/service consumes this API, add CDC tests to lock the interface.
+
+## #17 Task
+ArchUnit extensions: add rules for package cycles, annotations usage, and public API exposure.
+
+## #18 Task
+Build/quality gates: JaCoCo “check” rule with thresholds; SpotBugs/Checkstyle for static analysis.
 
 ---
+
+I reviewed the working tree and recent history, then split the changes into granular, chronological commits aligned to your tasks.
