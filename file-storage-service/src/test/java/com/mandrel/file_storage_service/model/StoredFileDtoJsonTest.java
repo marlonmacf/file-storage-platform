@@ -2,14 +2,12 @@ package com.mandrel.file_storage_service.model;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.Base64;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.json.JsonTest;
-import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,9 +17,6 @@ class StoredFileDtoJsonTest {
 
     @Autowired
     private ObjectMapper objectMapper;
-
-    @Autowired
-    private Jackson2ObjectMapperBuilder builder;
 
     @Test
     void serialize_fullObject_shouldMatchExpectedShape() throws Exception {
